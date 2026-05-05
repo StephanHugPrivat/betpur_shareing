@@ -1,2 +1,2 @@
-# betpur_sharing
-sharing for a better life
+# betpur_shareing
+shareing for a better life
