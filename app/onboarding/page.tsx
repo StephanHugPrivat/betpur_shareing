@@ -30,14 +30,28 @@ export default function OnboardingPage() {
             let foto_url = null
 
             if (file) {
+                let fileToCompress = file;
+                const isHeic = fileToCompress.type === 'image/heic' || fileToCompress.type === 'image/heif' || fileToCompress.name.toLowerCase().endsWith('.heic') || fileToCompress.name.toLowerCase().endsWith('.heif');
+                
+                if (isHeic) {
+                    const heic2any = (await import('heic2any')).default;
+                    const convertedBlob = await heic2any({
+                        blob: fileToCompress,
+                        toType: 'image/jpeg',
+                        quality: 0.8
+                    });
+                    const singleBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                    fileToCompress = new File([singleBlob], fileToCompress.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
+                }
+
                 // Compress image
                 const options = {
                     maxSizeMB: 0.5,
                     maxWidthOrHeight: 800,
                     useWebWorker: true,
-                    fileType: 'image/webp'
+                    fileType: 'image/webp' as const
                 }
-                const compressedFile = await imageCompression(file, options)
+                const compressedFile = await imageCompression(fileToCompress, options)
                 const fileName = `${user.id}/${Date.now()}.webp`
 
                 const { error: uploadError } = await supabase.storage
@@ -63,8 +77,8 @@ export default function OnboardingPage() {
 
             router.push('/marktplatz')
             router.refresh()
-        } catch (err: any) {
-            setError(err.message)
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
             setLoading(false)
         }
     }

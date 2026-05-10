@@ -5,8 +5,18 @@ import { createClient } from '@/lib/supabase/client'
 import { Shield, Check, X, Ban, Loader2, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+interface AdminProfile {
+    id: string
+    name?: string | null
+    wohnung?: string | null
+    status: string
+    is_admin?: boolean
+    created_at?: string
+    items?: { count: number }[]
+}
+
 export default function AdminDashboard() {
-    const [profiles, setProfiles] = useState<any[]>([])
+    const [profiles, setProfiles] = useState<AdminProfile[]>([])
     const [loading, setLoading] = useState(true)
     const [isAdmin, setIsAdmin] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -16,6 +26,7 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         checkAdminAndLoad()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const checkAdminAndLoad = async () => {
@@ -39,8 +50,8 @@ export default function AdminDashboard() {
 
             setIsAdmin(true)
             loadData()
-        } catch (err: any) {
-            setError(err.message)
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
         }
     }
 
@@ -60,13 +71,13 @@ export default function AdminDashboard() {
     }
 
     const updateStatus = async (id: string, newStatus: string) => {
-        const { error } = await supabase
+        const { error: updateErr } = await supabase
             .from('profiles')
             .update({ status: newStatus })
             .eq('id', id)
 
-        if (error) {
-            alert("Fehler: " + error.message)
+        if (updateErr) {
+            alert("Fehler: " + updateErr.message)
         } else {
             loadData()
         }
@@ -88,6 +99,11 @@ export default function AdminDashboard() {
                 <p className="text-gray-500 mt-2 font-medium">Verwalte die Mitglieder der Siedlung.</p>
             </div>
 
+            {error && (
+                <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+                    {error}
+                </div>
+            )}
             {/* Pending Approvals */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="bg-amber-50 p-4 border-b border-amber-100 flex justify-between items-center">
