@@ -15,7 +15,6 @@ import {
     Cpu,
     Tag,
     Clock,
-    MessageCircle,
 } from 'lucide-react'
 import RequestButton from './RequestButton'
 

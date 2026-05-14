@@ -32,8 +32,8 @@ export default function RequestButton({ itemId, isRequested }: { itemId: string,
             await createLoanRequest(itemId, nachricht)
             setSuccess(true)
             setIsOpen(false)
-        } catch (err: any) {
-            setError(err.message || 'Ein Fehler ist aufgetreten')
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten')
         } finally {
             setIsLoading(false)
         }

@@ -105,12 +105,13 @@ export default async function AnfragenPage() {
                             Niemand hat bisher etwas von dir angefragt.
                         </p>
                     ) : (
-                        erhalteneAnfragen.map((req: any) => {
-                            const requesterName = Array.isArray(req.profiles) ? req.profiles[0]?.name : req.profiles?.name
-                            const item = Array.isArray(req.items) ? req.items[0] : req.items
+                        erhalteneAnfragen.map((req: unknown) => {
+                            const typedReq = req as { id: string, status: string, nachricht: string, owner_antwort: string, profiles: unknown, items: unknown }
+                            const requesterName = Array.isArray(typedReq.profiles) ? (typedReq.profiles[0] as {name: string})?.name : (typedReq.profiles as {name: string})?.name
+                            const item = Array.isArray(typedReq.items) ? (typedReq.items[0] as {id: string, titel: string, foto_url: string}) : (typedReq.items as {id: string, titel: string, foto_url: string})
 
                             return (
-                                <div key={req.id} className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-4">
+                                <div key={typedReq.id} className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-4">
                                     <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 relative border border-gray-200">
                                         {item?.foto_url ? (
                                             <Image src={item.foto_url} alt={item.titel} fill className="object-cover" sizes="64px" />
@@ -123,24 +124,24 @@ export default async function AnfragenPage() {
                                             <Link href={`/marktplatz/${item?.id}`} className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">
                                                 {item?.titel}
                                             </Link>
-                                            <StatusBadge status={req.status} />
+                                            <StatusBadge status={typedReq.status} />
                                         </div>
                                         <p className="text-xs text-gray-500 mb-2">Angefragt von <span className="font-medium text-gray-700">{requesterName}</span></p>
                                         
-                                        {req.nachricht && (
+                                        {typedReq.nachricht && (
                                             <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600 mb-3 border border-gray-100">
                                                 <span className="text-xs font-semibold text-gray-400 block mb-1">Nachricht:</span>
-                                                "{req.nachricht}"
+                                                &quot;{typedReq.nachricht}&quot;
                                             </div>
                                         )}
 
-                                        {req.status === 'pending' && (
-                                            <RequestActionButtons requestId={req.id} />
+                                        {typedReq.status === 'pending' && (
+                                            <RequestActionButtons requestId={typedReq.id} />
                                         )}
-                                        {req.owner_antwort && req.status !== 'pending' && (
+                                        {typedReq.owner_antwort && typedReq.status !== 'pending' && (
                                             <div className="bg-indigo-50/50 rounded-lg p-3 text-sm text-gray-600 border border-indigo-100/50">
                                                 <span className="text-xs font-semibold text-indigo-400 block mb-1">Deine Antwort:</span>
-                                                "{req.owner_antwort}"
+                                                &quot;{typedReq.owner_antwort}&quot;
                                             </div>
                                         )}
                                     </div>
@@ -161,13 +162,14 @@ export default async function AnfragenPage() {
                             Du hast noch keine Gegenstände angefragt.
                         </p>
                     ) : (
-                        gesendeteAnfragen.map((req: any) => {
-                            const item = Array.isArray(req.items) ? req.items[0] : req.items
-                            const ownerProfile = Array.isArray(item?.profiles) ? item?.profiles[0] : item?.profiles
+                        gesendeteAnfragen.map((req: unknown) => {
+                            const typedReq = req as { id: string, status: string, nachricht: string, owner_antwort: string, profiles: unknown, items: unknown }
+                            const item = Array.isArray(typedReq.items) ? (typedReq.items[0] as {id: string, titel: string, foto_url: string, profiles: unknown}) : (typedReq.items as {id: string, titel: string, foto_url: string, profiles: unknown})
+                            const ownerProfile = Array.isArray(item?.profiles) ? (item.profiles[0] as {name: string}) : (item?.profiles as {name: string})
                             const ownerName = ownerProfile?.name
 
                             return (
-                                <div key={req.id} className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-4 opacity-90 hover:opacity-100 transition-opacity">
+                                <div key={typedReq.id} className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-4 opacity-90 hover:opacity-100 transition-opacity">
                                     <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 relative border border-gray-200">
                                         {item?.foto_url ? (
                                             <Image src={item.foto_url} alt={item.titel} fill className="object-cover" sizes="64px" />
@@ -180,14 +182,14 @@ export default async function AnfragenPage() {
                                             <Link href={`/marktplatz/${item?.id}`} className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">
                                                 {item?.titel}
                                             </Link>
-                                            <StatusBadge status={req.status} />
+                                            <StatusBadge status={typedReq.status} />
                                         </div>
                                         <p className="text-xs text-gray-500 mb-2">Besitzer: <span className="font-medium text-gray-700">{ownerName}</span></p>
                                         
-                                        {req.owner_antwort && (
+                                        {typedReq.owner_antwort && (
                                             <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600 mt-2 border border-gray-100">
                                                 <span className="text-xs font-semibold text-gray-400 block mb-1">Antwort von {ownerName}:</span>
-                                                "{req.owner_antwort}"
+                                                &quot;{typedReq.owner_antwort}&quot;
                                             </div>
                                         )}
                                     </div>

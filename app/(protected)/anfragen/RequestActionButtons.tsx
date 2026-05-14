@@ -24,8 +24,8 @@ export default function RequestActionButtons({ requestId }: { requestId: string 
                 await declineLoanRequest(requestId, antwort)
             }
             setAction(null)
-        } catch (err: any) {
-            setError(err.message || 'Ein Fehler ist aufgetreten')
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten')
             setIsLoading(false)
         }
     }

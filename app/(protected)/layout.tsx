@@ -126,20 +126,20 @@ export default async function ProtectedLayout({
             </main>
 
             {/* Mobile Bottom Navigation */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center p-3 z-50 pb-safe">
-                <Link href="/marktplatz" className="flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center z-50 pb-safe">
+                <Link href="/marktplatz" className="flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors">
                     <Search className="w-6 h-6" />
                     <span className="text-[10px] font-medium">Suchen</span>
                 </Link>
-                <Link href="/objekte/neu" className="flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
+                <Link href="/objekte/neu" className="flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors">
                     <PlusCircle className="w-6 h-6" />
                     <span className="text-[10px] font-medium">Erfassen</span>
                 </Link>
-                <Link href="/objekte" className="flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
+                <Link href="/objekte" className="flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors">
                     <Package className="w-6 h-6" />
                     <span className="text-[10px] font-medium">Meine</span>
                 </Link>
-                <Link href="/anfragen" className="relative flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
+                <Link href="/anfragen" className="flex-1 py-3 relative flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors">
                     <UserCircle className="w-6 h-6" />
                     {pendingCount > 0 && (
                         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold border border-white">

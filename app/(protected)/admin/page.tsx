@@ -104,6 +104,25 @@ export default function AdminDashboard() {
                     {error}
                 </div>
             )}
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+                    <p className="text-sm text-gray-500 font-medium">Aktive Mitglieder</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-1">{active.length}</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+                    <p className="text-sm text-gray-500 font-medium">Ausstehend</p>
+                    <p className="text-2xl font-bold text-amber-600 mt-1">{pending.length}</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+                    <p className="text-sm text-gray-500 font-medium">Objekte Gesamt</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-1">
+                        {active.reduce((acc, p) => acc + (p.items?.[0]?.count || 0), 0)}
+                    </p>
+                </div>
+            </div>
+
             {/* Pending Approvals */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="bg-amber-50 p-4 border-b border-amber-100 flex justify-between items-center">
