@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Pencil, EyeOff, Eye, Loader2 } from 'lucide-react'
+import { Pencil, EyeOff, Eye, Loader2, Undo2 } from 'lucide-react'
 import type { ItemCardData } from '@/components/ItemCard'
 
 interface MeineObjekteActionsProps {
@@ -21,10 +21,8 @@ export default function MeineObjekteActions({ item }: MeineObjekteActionsProps) 
     const isInaktiv = item.status === 'inaktiv'
 
     const handleToggleStatus = async () => {
-        if (isAusgeliehen) return // Cannot deactivate while loaned
-
         setError(null)
-        const newStatus = isInaktiv ? 'verfuegbar' : 'inaktiv'
+        const newStatus = isAusgeliehen ? 'verfuegbar' : (isInaktiv ? 'verfuegbar' : 'inaktiv')
 
         const { error: updateError } = await supabase
             .from('items')
@@ -55,11 +53,11 @@ export default function MeineObjekteActions({ item }: MeineObjekteActionsProps) 
             <button
                 id={`status-toggle-${item.id}`}
                 onClick={handleToggleStatus}
-                disabled={isAusgeliehen || isPending}
-                title={isAusgeliehen ? 'Kann nicht deaktiviert werden (ausgeliehen)' : isInaktiv ? 'Reaktivieren' : 'Deaktivieren'}
+                disabled={isPending}
+                title={isAusgeliehen ? 'Wieder verfügbar machen' : isInaktiv ? 'Reaktivieren' : 'Deaktivieren'}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
                     isAusgeliehen
-                        ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                        ? 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
                         : isInaktiv
                             ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200'
                             : 'bg-gray-50 hover:bg-red-50 text-gray-600 hover:text-red-600 border-gray-200 hover:border-red-200'
@@ -67,6 +65,11 @@ export default function MeineObjekteActions({ item }: MeineObjekteActionsProps) 
             >
                 {isPending ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : isAusgeliehen ? (
+                    <>
+                        <Undo2 className="w-3.5 h-3.5" />
+                        Zurückerhalten
+                    </>
                 ) : isInaktiv ? (
                     <>
                         <Eye className="w-3.5 h-3.5" />

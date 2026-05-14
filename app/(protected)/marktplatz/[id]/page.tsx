@@ -17,6 +17,7 @@ import {
     Clock,
     MessageCircle,
 } from 'lucide-react'
+import RequestButton from './RequestButton'
 
 // ------------------------------------------------------------------
 // Metadata
@@ -119,6 +120,18 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
     const kategorie = item.kategorie as ItemKategorie
     const owner = Array.isArray(item.profiles) ? item.profiles[0] : item.profiles
     const canRequest = status === 'verfuegbar' && !isOwner
+
+    let isRequested = false
+    if (canRequest) {
+        const { count } = await supabase
+            .from('loan_requests')
+            .select('*', { count: 'exact', head: true })
+            .eq('item_id', params.id)
+            .eq('requester_id', user.id)
+            .in('status', ['pending', 'accepted'])
+        
+        if (count && count > 0) isRequested = true
+    }
 
     const formattedDate = new Date(item.created_at).toLocaleDateString('de-CH', {
         day: 'numeric',
@@ -234,23 +247,14 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
                         <p className="text-sm text-gray-700 font-semibold">Interesse?</p>
                         <p className="text-xs text-gray-500 leading-relaxed">
                             {canRequest
-                                ? 'Das Anfrage-System wird in Phase 3 freigeschaltet. Kontaktiere den Besitzer vorerst direkt.'
+                                ? 'Sende eine Anfrage an den Besitzer, um diesen Gegenstand auszuleihen.'
                                 : status === 'ausgeliehen'
                                     ? 'Dieses Objekt ist gerade ausgeliehen. Schau später nochmal vorbei.'
                                     : 'Dieses Objekt ist momentan nicht verfügbar.'}
                         </p>
-                        <button
-                            id="anfrage-btn"
-                            disabled
-                            title="Kommt in Phase 3"
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-100 text-gray-400 rounded-xl text-sm font-semibold cursor-not-allowed border border-gray-200"
-                        >
-                            <MessageCircle className="w-4 h-4" />
-                            Ausleihen anfragen
-                            <span className="ml-1 text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-medium">
-                                Kommt bald
-                            </span>
-                        </button>
+                        {canRequest && (
+                            <RequestButton itemId={item.id} isRequested={isRequested} />
+                        )}
                     </div>
                 )}
             </div>
