@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Package, Search, PlusCircle, UserCircle, LogOut, Shield } from 'lucide-react'
+import { getPendingRequestsCount } from '@/app/actions/loanRequests'
 
 export default async function ProtectedLayout({
     children,
@@ -55,6 +56,9 @@ export default async function ProtectedLayout({
         redirect('/onboarding')
     }
 
+    // Fetch pending requests for badge
+    const pendingCount = await getPendingRequestsCount()
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
             {/* Mobile Header */}
@@ -85,9 +89,16 @@ export default async function ProtectedLayout({
                         <PlusCircle className="w-5 h-5 text-gray-500" />
                         Neues Objekt
                     </Link>
-                    <Link href="/anfragen" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors">
-                        <UserCircle className="w-5 h-5 text-gray-500" />
-                        Anfragen
+                    <Link href="/anfragen" className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors">
+                        <div className="flex items-center gap-3">
+                            <UserCircle className="w-5 h-5 text-gray-500" />
+                            Anfragen
+                        </div>
+                        {pendingCount > 0 && (
+                            <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                {pendingCount}
+                            </span>
+                        )}
                     </Link>
 
                     {profile.is_admin && (
@@ -128,8 +139,13 @@ export default async function ProtectedLayout({
                     <Package className="w-6 h-6" />
                     <span className="text-[10px] font-medium">Meine</span>
                 </Link>
-                <Link href="/anfragen" className="flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
+                <Link href="/anfragen" className="relative flex flex-col items-center gap-1 text-gray-500 hover:text-blue-600">
                     <UserCircle className="w-6 h-6" />
+                    {pendingCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold border border-white">
+                            {pendingCount}
+                        </span>
+                    )}
                     <span className="text-[10px] font-medium">Anfragen</span>
                 </Link>
             </nav>
