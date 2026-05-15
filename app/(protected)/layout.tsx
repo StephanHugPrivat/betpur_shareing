@@ -63,7 +63,7 @@ export default async function ProtectedLayout({
         <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
             {/* Mobile Header */}
             <header className="md:hidden bg-white border-b border-gray-200 p-4 flex justify-between items-center sticky top-0 z-50">
-                <h1 className="font-bold text-xl text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-500">SiedlungsShare</h1>
+                <h1 className="font-bold text-xl text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-500">Betpur Share</h1>
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
                     {user.email?.charAt(0).toUpperCase()}
                 </div>
@@ -73,7 +73,7 @@ export default async function ProtectedLayout({
             <nav className="hidden md:flex w-64 bg-white border-r border-gray-200 flex-col sticky top-0 h-screen">
                 <div className="p-6">
                     <h1 className="font-bold text-2xl text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-500">
-                        SiedlungsShare
+                        Betpur Share
                     </h1>
                 </div>
                 <div className="flex-1 px-4 space-y-2">

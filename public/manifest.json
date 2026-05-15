@@ -1,6 +1,6 @@
 {
-  "name": "SiedlungsShare",
-  "short_name": "SiedlungsShare",
+  "name": "Betpur Share",
+  "short_name": "Betpur Share",
   "description": "Die Nachbarschafts-Sharing-App",
   "start_url": "/marktplatz",
   "display": "standalone",

@@ -94,7 +94,7 @@ export default function OnboardingPage() {
                         Dein erstes Objekt
                     </h1>
                     <p className="text-gray-500 font-medium text-sm leading-relaxed">
-                        Um SiedlungsShare nutzen zu können, musst du mindestens einen Gegenstand aus deinem Besitz der Gemeinschaft zum Ausleihen anbieten.
+                        Um Betpur Share nutzen zu können, musst du mindestens einen Gegenstand aus deinem Besitz der Gemeinschaft zum Ausleihen anbieten.
                     </p>
                 </div>
 
