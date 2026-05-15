@@ -7,6 +7,7 @@ import { User, Mail, KeyRound, Home, AlertCircle, Loader2, CheckCircle2 } from '
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({ name: '', wohnung: '', email: '', password: '' })
+    const [acceptedTerms, setAcceptedTerms] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -137,6 +138,27 @@ export default function RegisterPage() {
                                 placeholder="Mindestens 6 Zeichen"
                             />
                         </div>
+                    </div>
+
+                    <div>
+                        <label className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
+                            <input
+                                type="checkbox"
+                                required
+                                checked={acceptedTerms}
+                                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                                className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <div className="text-sm text-gray-700">
+                                <span className="font-semibold block mb-1">Teilnahmebedingungen akzeptieren</span>
+                                <ol className="list-decimal list-inside space-y-1 text-xs text-gray-600">
+                                    <li>Wer mitmacht muss etwas zum Ausleihen bereitstellen.</li>
+                                    <li>Wer mitmacht verspricht die Objekte sorgfältig zu behandeln.</li>
+                                    <li>Objekte werden sauber und komplett zurückgegeben.</li>
+                                    <li>Sind Objekte nach der Ausleihe beschädigt oder defekt, werden sie auf Kosten der ausleihenden Person repariert oder ersetzt.</li>
+                                </ol>
+                            </div>
+                        </label>
                     </div>
 
                     <button

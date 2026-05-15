@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SiedlungsShare",
+  title: "Betpur Share",
   description: "Die Nachbarschafts-Sharing-App",
   manifest: "/manifest.json",
 };

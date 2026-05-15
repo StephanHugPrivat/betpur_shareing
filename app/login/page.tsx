@@ -62,7 +62,7 @@ export default function LoginPage() {
                         <KeyRound className="text-white w-8 h-8" />
                     </div>
                     <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-                        SiedlungsShare
+                        Betpur Share
                     </h1>
                     <p className="text-gray-500 mt-2 font-medium">Willkommen zurück!</p>
                 </div>
